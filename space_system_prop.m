@@ -2,6 +2,9 @@ clc
 clear all
 close all
 
+% This program allow to calculate masses and volumes of the propulsive
+% subsystem of the mission considering different input and comparing the
+% results with expected values
 % inputs 
 delta_v = 28+567+185+133+41+50+150+39+65; %sum of velocities from the document
 v_SK = 150; %station keeping speed
@@ -33,7 +36,7 @@ R_spec_other = R/mmol_other; % specific gas constants
 R_spec_h = R/mmol_h;
 
 vol_h=m_fuel_dato/rho_h; % monopropellant volume
-vol_h_mar=vol_h*1.1; % propellant volume margine of 10%
+vol_h_mar = vol_h*1.1; % propellant volume margine of 10%
 vol_tank1=vol_h/2; %volume of 1 tank over 2
 vol_tank1_dato=0.45883779; %volume of 1 tank taken from real data
 
@@ -44,30 +47,33 @@ err_percentuale_tank1=err_tank1/vol_tank1_dato;
 %tanks material
 p_tank1=2.413*10^6; %pressure tank in Pa
 sigma_ti = 950*10^6; % deformation stress titanium
-sigma_al = 503*10^6; % deformation stress alluminium
-rho_ti = 2780; % density of titanium
-rho_al = 2810; % density of alluminium
+%sigma_al = 503*10^6; % deformation stress alluminium
+sigma_alloy=770*10^6
+rho_ti = 4500; % density of titanium
+%rho_al = 2810; % density of alluminium
+rho_alloy=8700 %density of inconel 625
 
 % thickness of the tanks with 2 tanks
 rtank = (0.75*vol_tank1/pi)^(1/3); % tank radius considering it spherical
 ttank_ti = p_tank1*rtank/(2*sigma_ti);
-ttank_al = p_tank1*rtank/(2*sigma_al);
+ttank_alloy = p_tank1*rtank/(2*sigma_alloy);
 mtank_ti = 4*pi/3*rho_ti*((rtank+ttank_ti)^3-rtank^3)
-mtank_al = 4*pi/3*rho_al*((rtank+ttank_al)^3-rtank^3)
+mtank_alloy = 4*pi/3*rho_alloy*((rtank+ttank_alloy)^3-rtank^3)
 
 % if it was 1 tank:
 rtank1 = (0.75*vol_h_mar/pi)^(1/3); % tank radius considering it spherical
 ttank_ti1 = p_tank1*rtank1/(2*sigma_ti); %thickness of the tank
-ttank_al1 = p_tank1*rtank1/(2*sigma_al);
+ttank_al1 = p_tank1*rtank1/(2*sigma_alloy);
 mtank_ti1 = 4*pi/3*rho_ti*((rtank1+ttank_ti1)^3-rtank1^3) %mass of the empty tank
-mtank_al1 = 4*pi/3*rho_al*((rtank1+ttank_al1)^3-rtank1^3)
+mtank_al1 = 4*pi/3*rho_alloy*((rtank1+ttank_al1)^3-rtank1^3)
 
 % if it was 3 tank:
 rtank3 = (0.75*vol_h_mar/3/pi)^(1/3); % tank radius considering it spherical
 ttank_ti3 = p_tank1*rtank3/(2*sigma_ti); %thickness of the tank
-ttank_al3 = p_tank1*rtank3/(2*sigma_al);
+ttank_al3 = p_tank1*rtank3/(2*sigma_alloy);
 mtank_ti3 = 4*pi/3*rho_ti*((rtank3+ttank_ti3)^3-rtank3^3) %mass of the empty tank
-mtank_al3 = 4*pi/3*rho_al*((rtank3+ttank_al3)^3-rtank3^3)
+mtank_al3 = 4*pi/3*rho_alloy*((rtank3+ttank_al3)^3-rtank3^3)
+
 %% Pressurant mass
 
 %pressurant gas selection: helium or N2
@@ -81,18 +87,22 @@ vol_press_dato=0.08193532; %given pressurant volume
 
 T_tank=293; %temperature of the tanks [K]
 p_press=2.8958*10^7; %pressure of the pressurant tank [Pa]
+rho_P2 = rho_he * (p_press/101325)
+rho_P2_N2 = rho_N2 * (p_press/101325)
 
 vol_he = vol_h_mar/((p_press/p_tank1)-1)
-m_press_he = vol_he*rho_he;
-m_press_N2 = vol_he*rho_N2;
+m_press_he = vol_he*rho_P2*1.2;
+m_press_N2 = vol_he*rho_P2_N2*1.2;
 %we select helio because has lower mass
 
-m_press_dato = vol_press_dato*rho_he;
+m_press_dato = 3.3;%vol_press_dato*rho_he;
 err_press_vol=vol_press_dato-vol_he; %errore tra i volumi dei pressurizzanti
 err_press_vol_percentuale=err_press_vol/vol_press_dato
 
 err_press_mass = m_press_dato-m_press_he;
 err_press_mass_percentuale=err_press_mass/m_press_dato
+err_press_mass_N2 = m_press_dato-m_press_N2;
+err_press_mass_percentuale_N2=err_press_mass_N2/m_press_dato
 
 %% total mass
 % masses of the engines
@@ -100,6 +110,4 @@ m_th_90 = 1.12; %prof slide
 m_th_22 = 0.59; %https://www.satcatalog.com/component/mr-106l-22n/
 %total mass of the propulsive system dry
 mtot = (mtank_ti*2 + m_press_he + m_th_90*4 + m_th_22*8)*1.1 %margin of 10% accounts for cables
-
-
 
