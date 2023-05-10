@@ -192,7 +192,7 @@ L_cable=-2; %Cable losses between -1dB and -3dB [dB]
 D_ant_ground=18.3; %diamter of the ground antenna [m] --> we chose WS1 New Mexico
 f_ground=2.2*10^9; %frequency from ground [Hz] NEW
 lambda_ground=c/f_ground; %wavelength
-G_ant_ground=10*log(pi*D_ant_ground^2*mu_ant/(lambda_ground^2)); %gain of the antenna [dB]
+G_ant_ground=10*log(pi*D_ant_ground^2*0.55/(lambda_ground^2)); %gain of the antenna [dB]
 theta_ground=65.3*lambda_ground/D_ant_ground; %beamwidth
 %CAMBIARE r
 r= 384.4*10^6; %distance between ground station and the satellite [m]
