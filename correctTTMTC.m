@@ -177,8 +177,8 @@ alpha_mod=1; %BPSK
 alpha_enc=2; 
 R_data_real= R_data*alpha_enc/alpha_mod;
 % We have a parabolic HGA (high-gain antenna):
-mu_ant=0.52; % 'horn antenna?' --> seen from the figure of LRO
-D_ant=0.3; %diameter of the antenna [m] from the graph mass-diameter --> actually (from the figure) it seems smaller
+mu_ant=0.7; % 'horn antenna?' --> seen from the figure of LRO
+D_ant=0.3*2; %diameter of the antenna [m] from the graph mass-diameter --> actually (from the figure) it seems smaller
 
 f=2271.2*10^6; %frequency [Hz] % NEW
 
@@ -226,25 +226,4 @@ SNR_min=10; %from the slides [dB]
 SNR_margin=SNR_carrier-SNR_min;
 
 %Compare: if SNR_margin> 3dB  --> the sizing is correct
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
