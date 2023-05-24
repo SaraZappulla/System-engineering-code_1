@@ -18,8 +18,8 @@ CompTemp_min_mar = 273.15+ CompTemp_min + margin;
 CompTemp_max_mar = 273.15+ CompTemp_max - margin;
 
 epsilon_rad = 0.78; % Silver teflon 5-mil
-epsilon_coa = 0.05;%0.15; mars Vapor Deposited Aluminum because it is the lowest
-alpha_coa = 0.08;%0.2 mars
+epsilon_coa = 0.92;%0.15; mars Vapor Deposited Aluminum because it is the lowest
+alpha_coa = 0.19;%0.2 mars
 
 rmoon = 1737.4;
 SemiMajorAxis = rmoon+50; % lro 
@@ -47,11 +47,11 @@ qsun_sc_cold = qo_cold * (Rplanet/rlro)^2;
 % albedo flux
 % our case is circular, so we do only one side of it
 theta = 0; %deg2rad(85); % simplified we can put 85°
-a_hot = 0.13; % 0.07 for the moon
+a_hot = 0.13; % moon albedo
 a_cold = 0.06;
 rplanet = rmoon; %3390; % for us moon radius
 h = 50;
-Rorbit = rplanet + h; %Rorbit = 3663;
+Rorbit = rplanet + h; 
 qalb_pl_hot = qsun_sc_hot * a_hot * cos(theta) * (rplanet/Rorbit)^2;
 qalb_pl_cold = qsun_sc_cold * a_cold * cos(theta) * (rplanet/Rorbit)^2;
 % If you want to do only one computation use q_alb_cold
