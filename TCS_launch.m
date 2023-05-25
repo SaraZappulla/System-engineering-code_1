@@ -21,9 +21,9 @@ epsilon_rad = 0.78; % Silver teflon 5-mil
 epsilon_coa = 0.05;%0.15; mars Vapor Deposited Aluminum because it is the lowest
 alpha_coa = 0.08;%0.2 mars
 
-rmoon = 1737.4;
-SemiMajorAxis = rmoon+50; % lro 
-eccentricity = 0.008;
+rearth = 6371;
+SemiMajorAxis = rearth+4000; % lro 
+eccentricity = 0.00;
 l1 = 3.9; %1.5; %LRO sc size
 l2 = 2.7; %1.8; % 
 l3 = 2.6; %1.4; % 
@@ -37,32 +37,27 @@ PanelSize = 4.2672 * 3.2004; % from homework 4 and third one is 5.5 * 10^-3
 %% Heat source
 
 % solar flux
-qo_hot = 1420; % ex prof 1367.5 from draft 
-qo_cold = 1280;
+qo_cold = 1367.5;
 Rplanet = 1; %distance of earth in AU
 rlro = 1; %distance of mars in AU
 qsun_sc_cold = qo_cold * (Rplanet/rlro)^2;
-qsun_sc_hot = qsun_sc_cold;
 
 % albedo flux
 % our case is circular, so we do only one side of it
 theta = 0; %deg2rad(85); % simplified we can put 85°
-a_hot = 0.13; % 0.07 for the moon
-a_cold = 0.06;
-rplanet = rmoon; %3390; % for us moon radius
-h = 50;
-Rorbit = rplanet + h; %Rorbit = 3663;
-qalb_pl_hot = qsun_sc_hot * a_hot * cos(theta) * (rplanet/Rorbit)^2;
+a_hot = 0.39; % 0.07 for the moon
+a_cold = 0.31;
+rplanet = rearth; %3390; % for us moon radius
+h = 4000;
+Rorbit = rplanet + h; 
+qalb_pl_hot = qsun_sc_cold * a_hot * cos(theta) * (rplanet/Rorbit)^2;
 qalb_pl_cold = qsun_sc_cold * a_cold * cos(theta) * (rplanet/Rorbit)^2;
-qalb_pl_hot = qalb_pl_cold;
 % If you want to do only one computation use q_alb_cold
 
 % infrared flux
 sigma = 5.67 * 10^-8; %boltzman constant this is wrong
-epsilon_ir_pl = 0.95; %infrared emissivity of the moon to change 0.85 mars from internet
-Tpl_cold = 273.15-140; % 210 in mars temperature of the moon in K
-Tpl_hot = 273.15+125;
-Tpl_avg = (Tpl_hot+Tpl_cold)/2; %usiamo la T media: 0°C perchè quella calda darebbe troppi problemi
+epsilon_ir_pl = 0.90; %infrared emissivity of the moon to change 0.85 mars from internet
+Tpl_avg = 15 + 273.15; %usiamo la T media: 0°C perchè quella calda darebbe troppi problemi
 qIR_pl_hot = sigma * epsilon_ir_pl * Tpl_avg^4 * (rplanet/Rorbit)^2;
 qIR_pl_cold = sigma * epsilon_ir_pl * Tpl_avg^4 * (rplanet/Rorbit)^2;
 
@@ -77,7 +72,7 @@ alpha_to_epsilon = alpha_coa/epsilon_coa;
 Ka = 1; % choosen as 1 to mazimise the power, it can be a bit less
 
 Fpl_sc = 0.5 * (1-(sqrt((h/rplanet)^2+(2*h/rplanet))/(1+h/rplanet)));
-Qsun_hot = Across * alpha_coa * qsun_sc_hot;
+Qsun_hot = Across * alpha_coa * qsun_sc_cold;
 Qalb_hot = TotalArea * Fpl_sc * alpha_coa * Ka * qalb_pl_hot;
 QIR_hot = TotalArea * Fpl_sc * qIR_pl_hot;
 
