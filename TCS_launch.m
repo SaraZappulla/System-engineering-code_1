@@ -17,7 +17,7 @@ margin = 15;
 CompTemp_min_mar = 273.15+ CompTemp_min + margin;
 CompTemp_max_mar = 273.15+ CompTemp_max - margin;
 
-epsilon_rad = 0.78; % Silver teflon 5-mil
+epsilon_rad = 0.80; % OSR Pilkington, 5-mill
 epsilon_coa = 0.05;%0.15; mars Vapor Deposited Aluminum because it is the lowest
 alpha_coa = 0.08;%0.2 mars
 
@@ -102,3 +102,10 @@ Qheaters_withRad = sigma*(epsilon_coa*Aemitting+epsilon_rad*Arad_min)*CompTemp_m
 if Tsc_min < CompTemp_min_mar  || Tsc_min_withRad < CompTemp_min_mar %|| Tsc_min_real < CompTemp_min_mar
     disp('error Tmin')
 end
+
+%% mass
+density = 2.6; %g/cm3
+densitym = 2.6 / 1000 * 10^6;
+thickness = 0.005;
+v = Arad_min*thickness;
+mass = v*density

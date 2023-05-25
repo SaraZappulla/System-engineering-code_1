@@ -17,13 +17,10 @@ margin = 15;
 CompTemp_min_mar = 273.15+ CompTemp_min + margin;
 CompTemp_max_mar = 273.15+ CompTemp_max - margin;
 
-epsilon_rad = 0.78; % Silver teflon 5-mil
+epsilon_rad = 0.80; % OSR Pilkington, 5-mill
 epsilon_coa = 0.05;%0.15; mars Vapor Deposited Aluminum because it is the lowest
 alpha_coa = 0.08;%0.2 mars
 
-rmoon = 1737.4;
-SemiMajorAxis = rmoon+50; % lro 
-eccentricity = 0.008;
 l1 = 3.9; %1.5; %LRO sc size
 l2 = 2.7; %1.8; % 
 l3 = 2.6; %1.4; % 
@@ -44,16 +41,13 @@ rlro = 1; %distance of mars in AU
 qsun_sc_hot = qo_hot * (Rplanet/rlro)^2;
 qsun_sc_cold = qo_cold * (Rplanet/rlro)^2;
 
-rplanet = rmoon; %3390; % for us moon radius
-h = 50;
-Rorbit = rplanet + h; %Rorbit = 3663;
+
 %% Hot case / Cold case
 
 Across = (pi * rsphere^2) %2*rsphere * pi * l1; %da file matteo  da file sara;
 alpha_to_epsilon = alpha_coa/epsilon_coa;
 Ka = 1; % choosen as 1 to mazimise the power, it can be a bit less
 
-Fpl_sc = 0.5 * (1-(sqrt((h/rplanet)^2+(2*h/rplanet))/(1+h/rplanet)));
 Qsun_hot = Across * alpha_coa * qsun_sc_hot;
 
 % hot case
