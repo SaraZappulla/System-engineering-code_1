@@ -4,14 +4,14 @@ close all
 clc
 
 % DATA (pag 8): put data for our mission
-Pd=462.5; % power request in daylight
-Pe=277.5; % power request in eclipse
+Pd= 375; % power request in daylight
+Pe= 225.04; % power request in eclipse
 
 Te= 48*60;%period in eclipse worst case
 Td= 2*3600-Te;%period in daylight
-lifetime=2; %years
-xd=0.8; %pag 5 PEAK POWER TRANSFER IS THE CHOOSEN ONE
-xe=0.6; %pag 10
+lifetime=3; %years
+xd=0.85; %pag 5 DET IS THE CHOOSEN ONE
+xe=0.65; %pag 10
 A_sa_initial=10.7 % m^2 solar array area
 
 %% Solar arrays
@@ -24,8 +24,8 @@ epsilon_bol=0.26; % efficiency at the beginning of life
 Id=0.7;
 dpy=0.028; % degradation through years
 Io=588.5; % W/m^2 pag 10
-t=5.5; %mm thickness
-rho_Si=75; %kg/m^3 density of the Silicon based cells
+t=5.5*10^-4; %mm thickness
+rho_Si=10; %kg/m^3 density of the Silicon based cells
 Po=epsilon_bol*Io; % specific power output W/m^2
 
 mytheta=deg2rad(30); % you have to assume it! 30 deg is the maximum angle you can usually found out
@@ -64,9 +64,10 @@ V_cell_battery=3.6; %V
 
 C=Te/3600*Pe/(DOD*N_battery*eta); %Wh
 m_battery=C/Es; %kg
-V_batt=C/Ed; %dm^3
+V_batt=C*10^-3/Ed; %m^3
 V_sys_batt=28; %V
 C_Ah=C/V_sys_batt; %Ah it's about 22.5(as slide 8)
+V_sp=A_sa*t;
 
 % refine the size of the battery
 N_series_battery= ceil(V_sys_batt/V_cell_battery);
@@ -77,14 +78,7 @@ C_string=mu*C_cell*V_real_battery; %Wh
 N_parallel=ceil(C/C_string);
 C_real_battery=N_parallel*C_string; %Wh
 
-% %% only if we have it, RTG (primary source) NON c'è 
-% %first choose between the 2 cases: GE-RTG or MM-RTG
-% %ex: choose RE-RTG:  
-% m_rtg= 56; %kg
-% P_r = 4400; % W power required for the most critical mode
-% eta_rtg = 0.068;
-% tau=86.6;
-% P_bol_rtg=eta_rtg*P_r;
-% P_eol_rtg=P_bol_rtg*exp(-0.693/tau*lifetime);
-% N_rtg=ceil(P_r/P_eol_rtg);
-% m_tot=N_rtg*m_rtg;
+%% total volume and mass
+
+m_tot = m_sa + m_battery %total system mass budget
+v_tot = V_batt + V_sp % total system volume budget
